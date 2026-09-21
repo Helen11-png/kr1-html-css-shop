@@ -1,0 +1,73 @@
+// Получаем модальное окно по id.
+const orderDialog = document.getElementById('order-dialog');
+
+// Получаем все кнопки заказа в карточках товаров.
+const orderButtons = document.querySelectorAll('.product-card__button');
+
+// Получаем кнопку закрытия модального окна.
+const closeDialogButton = document.getElementById('close-order-dialog');
+
+// Получаем скрытое поле, в которое будет записан выбранный товар.
+const selectedProductInput = document.getElementById('selected-product');
+
+// Перебираемвсекнопки «Заказать».
+orderButtons.forEach((button) => {
+button.addEventListener('click', () => {
+    // Получаемназваниетовараиз data-атрибута.
+    const productName = button.dataset.product;
+
+// Записываем название товара в скрытое поле формы.
+selectedProductInput.value = productName;
+
+    // Открываеммодальноеокно.
+orderDialog.showModal();
+  });
+});
+
+// Закрываем модальное окно по кнопке «Закрыть».
+closeDialogButton.addEventListener('click', () => {
+orderDialog.close();
+});
+// Получаемформузаявки.
+const orderForm = document.getElementById('order-form');
+
+// Получаем сообщение об успешной отправке.
+const successMessage = document.getElementById('success-message');
+
+// Обрабатываемотправкуформы.
+orderForm.addEventListener('submit', (event) => {
+// Отменяем стандартную отправку формы,
+  // потому что backend пока не подключён.
+event.preventDefault();
+
+  // Сбрасываем предыдущие признаки ошибок.
+const formElements = Array.from(orderForm.elements);
+
+formElements.forEach((element) => {
+    if (element.willValidate) {
+element.removeAttribute('aria-invalid');
+    }
+  });
+
+  // Проверяемвстроенные HTML-ограниченияформы.
+  if (!orderForm.checkValidity()) {
+formElements.forEach((element) => {
+      if (element.willValidate&& !element.checkValidity()) {
+element.setAttribute('aria-invalid', 'true');
+}
+    });
+
+    // Показываем стандартные сообщения браузера.
+orderForm.reportValidity();
+return;
+  }
+
+  // Показываем сообщение об успешной отправке.
+successMessage.hidden = false;
+
+  // Очищаемформу.
+orderForm.reset();
+
+  // Закрываем модальное окно.
+orderDialog.close();
+});
