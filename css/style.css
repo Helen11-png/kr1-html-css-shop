@@ -3,17 +3,17 @@
    =============================== */
 :root {
   /* Основные цвета проекта */
---color-bg: #ffffff;
-  --color-text: #222222;
+--color-bg: #3D665A;
+  --color-text: #FFF5DC;
   --color-muted: #666666;
-  --color-primary: #0057b8;
-  --color-primary-dark: #003f86;
+  --color-primary: #768C67;
+  --color-primary-dark: #4a5741;
   --color-border: #dddddd;
   --color-surface: #f7f7f7;
   --color-surface-accent: #eef5ff;
   --color-danger: #b00020;
   --color-success: #168a2f;
-  --color-success-bg: #eefaf0;
+  --color-success-bg: #666666;
   --color-white: #ffffff;
 
   /* Отступы */
@@ -46,14 +46,15 @@
 
 /*
   Убираем стандартный внешний отступ браузера у body.
-  Без этого вокруг страницы может появиться белая рамка.
+  Цвет текста берём из переменной --color-text (светлый),
+  а не задаём напрямую — иначе он не будет виден на тёмном фоне.
 */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   line-height: 1.5;
-  color: #222222;
-  background-color: #ffffff;
+  color: var(--color-text);
+  background-color: #293330;
 }
 
 /*
@@ -68,20 +69,11 @@ main,
 
 
 /*
-  Оформляем шапку страницы.
-  Пока используется простой светло-серый фон.
+  Оформляем подвал страницы тем же тёмным цветом, что и карточки,
+  hero-блок и aside — чтобы все «панели» на странице были одного тона.
 */
 .site-footer {
-  background-color: var(--color-surface);
-}
-
-
-/*
-  Оформляем подвал страницы тем же фоном,
-  чтобы визуально отделить его от основного содержимого.
-*/
-.site-footer {
-  background-color: #f2f2f2;
+  background-color: var(--color-bg);
 }
 
 section {
@@ -106,11 +98,13 @@ section h2 {
 
 /*
   Оформляем текстовый логотип.
+  Цвет — светлый, из переменной --color-text, чтобы логотип было видно
+  на тёмном фоне шапки (жёстко заданный тёмный цвет делал его невидимым).
 */
 .site-header__logo {
   font-weight: bold;
   text-decoration: none;
-  color: #222222;
+  color: var(--color-text);
 }
 
 /*
@@ -198,11 +192,16 @@ outline-offset: 3px;
    4. Компоненты страницы
 =============================== */
 
+/*
+  Hero-блок красится в тот же цвет, что и aside-info ниже (var(--color-bg)),
+  чтобы обе секции выглядели как единый тёмный «слой» интерфейса,
+  а не как два случайных, разных по цвету блока.
+*/
 .hero {
   max-width: var(--container-width);
   margin: 0 auto var(--space-xl);
   padding: var(--space-xl) var(--space-lg);
-  background-color: var(--color-surface-accent);
+  background-color: var(--color-bg);
   border-radius: var(--radius-lg);
 }
 
@@ -219,7 +218,13 @@ outline-offset: 3px;
   Карточка товара — самостоятельный блок.
   На следующих занятиях карточки будут доработаны и выстроены в сетку.
 */
+/*
+  position: relative нужен, чтобы бейдж («Идёт набор», «Новинка»)
+  позиционировался абсолютно относительно самой карточки,
+  а не относительно всей страницы.
+*/
 .product-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
@@ -230,9 +235,40 @@ outline-offset: 3px;
   background-color: var(--color-bg);
 }
 
+/*
+  Бейдж курса — «Идёт набор», «Новинка» и т. п.
+  position: absolute вынимает бейдж из потока и кладёт его
+  в угол карточки (родитель — .product-card с position: relative).
+*/
+.product-card__badge {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text);
+  background-color: var(--color-primary);
+  border-radius: var(--radius-sm);
+}
+
 .product-card__button {
   margin-top: auto;
 align-self: flex-start;
+}
+
+/*
+  Изображение курса. У карточки есть padding со всех сторон,
+  поэтому картинку "вытягиваем" отрицательными полями, чтобы она
+  доходила до самых краёв карточки, а не была с отступом как текст.
+*/
+.product-card__image {
+  width: calc(100% + var(--space-md) * 2);
+  aspect-ratio: 1 / 1;
+  margin: calc(-1 * var(--space-md)) calc(-1 * var(--space-md)) 0;
+  object-fit: cover;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  display: block;
 }
 
 
@@ -247,13 +283,16 @@ align-self: flex-start;
 
 /*
   Дополнительный информационный блок.
+  Тот же цвет, что и у hero-блока (var(--color-bg)) — раньше здесь был
+  другой, отдельный светлый оттенок (var(--color-surface)), из-за чего
+  hero и aside визуально не совпадали.
 */
 .aside-info {
   max-width: var(--container-width);
   margin: 0 auto var(--space-xl);
   padding: var(--space-md);
   border-left: 4px solid var(--color-primary);
-  background-color: var(--color-surface);
+  background-color: var(--color-bg);
 }
 
 
@@ -273,10 +312,35 @@ align-self: flex-start;
    5. Форма и модальное окно
    =============================== */
 
+/*
+  У <dialog> по умолчанию свой белый фон от браузера, если его не задать
+  явно. Добавлены background-color и color, иначе светлый текст формы
+  оказывается на белом фоне и его не видно.
+*/
+/*
+  z-index поднимает модальное окно над плавающей кнопкой заявки
+  и остальным содержимым страницы.
+*/
 .order-dialog {
+  z-index: 30;
 width: min(100% - 32px, 560px);
   padding: var(--space-lg);
   border: none;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/*
+  Обёртка для order.html — та же форма order-form,
+  но не в диалоге, а в обычном разделе страницы.
+*/
+.order-page {
+  max-width: 640px;
+  margin: 0 auto var(--space-xl);
+  padding: var(--space-lg);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
 }
 
@@ -372,6 +436,46 @@ outline-offset: 4px;
   grid-template-columns: repeat(3, 1fr);
 gap: var(--space-lg);
 }
+
+/*
+  В каталоге карточек больше (10 штук) и у каждой есть квадратная
+  картинка, поэтому здесь колонки уже, чем в общем .products-grid —
+  так карточки получаются компактнее и их помещается больше в ряд,
+  а не 3 крупные на всю ширину, как на главной странице.
+*/
+.catalog-layout__products .products-grid {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-md);
+}
+
+/*
+  Раскладка страницы каталога: фильтры слева, список курсов справа.
+  Без display: grid здесь aside и section просто шли друг под другом
+  на всю ширину, а не колонками.
+*/
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: var(--space-lg);
+  max-width: var(--container-width);
+  margin: 0 auto var(--space-xl);
+  align-items: start;
+}
+
+/*
+  position: sticky держит фильтры на экране, пока список курсов
+  прокручивается — сайдбар "прилипает" к верху на расстоянии
+  var(--space-lg) и остаётся видимым, пока не кончится его родитель.
+*/
+.catalog-filters {
+  position: sticky;
+  top: var(--space-lg);
+  padding: var(--space-md);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
 .catalog-filters__form {
   display: grid;
   gap: var(--space-md);
@@ -400,4 +504,135 @@ gap: var(--space-lg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
 font: inherit;
+}
+
+
+/* ===============================
+   6. Страница курса (product.html)
+   =============================== */
+
+.course {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: var(--space-xl);
+  max-width: var(--container-width);
+  margin: 0 auto var(--space-xl);
+  align-items: start;
+}
+
+/*
+  position: relative — та же логика, что и у .product-card:
+  бейдж курса кладётся поверх изображения через position: absolute.
+*/
+.course__media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--color-surface-accent);
+}
+
+.course__image {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+}
+
+.course__badge {
+  position: absolute;
+  top: var(--space-md);
+  left: var(--space-md);
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text);
+  background-color: var(--color-primary);
+  border-radius: var(--radius-sm);
+}
+
+.course__body {
+  padding: var(--space-lg);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.course__title {
+  margin-top: 0;
+}
+
+.course__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin: 0 0 var(--space-md);
+  padding: 0;
+  list-style: none;
+}
+
+.course__meta-item {
+  padding: 4px 10px;
+  font-size: 13px;
+  color: var(--color-text);
+  background-color: var(--color-surface-accent);
+  border-radius: var(--radius-sm);
+}
+
+.course__price {
+  margin: var(--space-md) 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.course__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+/*
+  Таблица характеристик курса.
+*/
+.product-table {
+  width: 100%;
+  margin: var(--space-md) 0 var(--space-lg);
+  border-collapse: collapse;
+}
+
+.product-table caption {
+  margin-bottom: var(--space-sm);
+  color: var(--color-muted);
+  text-align: left;
+}
+
+.product-table th,
+.product-table td {
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.product-table th {
+  width: 40%;
+  font-weight: 600;
+}
+
+
+/* ===============================
+   7. Плавающая кнопка заявки
+   =============================== */
+/*
+  position: fixed держит кнопку на экране при любой прокрутке страницы,
+  z-index — выше обычного контента, чтобы кнопка не пряталась под ним.
+*/
+.cta-float {
+  position: fixed;
+  right: var(--space-lg);
+  bottom: var(--space-lg);
+  z-index: 20;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
