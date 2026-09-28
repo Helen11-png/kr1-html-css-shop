@@ -35,7 +35,7 @@
 /* ===============================
    2. Базовые стили
    =============================== */
-/* 
+/*
   Универсальное правило для всех элементов.
   border-box делает расчёт размеров более понятным:
   width включает content, padding и border.
@@ -60,9 +60,9 @@ body {
   Задаём внутренние отступы для основных областей страницы.
   Это делает содержимое визуально отделённым от краёв окна браузера.
 */
-header,
+.site-header,
 main,
-footer {
+.site-footer {
   padding: var(--space-lg);
 }
 
@@ -71,7 +71,7 @@ footer {
   Оформляем шапку страницы.
   Пока используется простой светло-серый фон.
 */
-footer {
+.site-footer {
   background-color: var(--color-surface);
 }
 
@@ -80,7 +80,7 @@ footer {
   Оформляем подвал страницы тем же фоном,
   чтобы визуально отделить его от основного содержимого.
 */
-footer {
+.site-footer {
   background-color: #f2f2f2;
 }
 
@@ -107,7 +107,7 @@ section h2 {
 /*
   Оформляем текстовый логотип.
 */
-.site-logo {
+.site-header__logo {
   font-weight: bold;
   text-decoration: none;
   color: #222222;
@@ -131,14 +131,14 @@ list-style: none;
 /*
   Добавляем расстояние между пунктами меню.
 */
-.site-nav__list li {
+.site-nav__item {
   margin-bottom: 8px;
 }
 
 /*
   Оформляем ссылки меню.
 */
-.site-nav__list a {
+.site-nav__link {
 display: inline-block;
   padding: var(--space-sm) var(--space-md);
   color: var(--color-primary);
@@ -146,7 +146,7 @@ display: inline-block;
   border-radius: var(--radius-sm);
 }
 
-.site-nav__lista:hover {
+.site-nav__link:hover {
   color: var(--color-white);
   background-color: var(--color-primary);
 }
@@ -230,7 +230,7 @@ outline-offset: 3px;
   background-color: var(--color-bg);
 }
 
-.product-card .button {
+.product-card__button {
   margin-top: auto;
 align-self: flex-start;
 }
@@ -240,7 +240,7 @@ align-self: flex-start;
   border-color: var(--color-primary);
 }
 
-.product-card h3 {
+.product-card__title {
   margin-top: 0;
 }
 
@@ -284,18 +284,18 @@ width: min(100% - 32px, 560px);
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.form-field {
+.order-form__field {
   margin-bottom: var(--space-md);
 }
 
-.form-field label {
+.order-form__label {
   display: block;
   margin-bottom: var(--space-xs);
 }
 
-.form-field input,
-.form-field select,
-.form-field textarea {
+.order-form__input,
+.order-form__select,
+.order-form__textarea {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--color-border);
@@ -303,11 +303,11 @@ width: min(100% - 32px, 560px);
   font: inherit;
 }
 
-.form-field input[type="checkbox"] {
+.order-form__field--checkbox input[type="checkbox"] {
   width: auto;
 }
 
-.form-field small {
+.order-form__hint {
   display: block;
   margin-top: var(--space-xs);
   color: var(--color-muted);
@@ -316,16 +316,16 @@ width: min(100% - 32px, 560px);
 /*
   Видимый фокус для клавиатурной навигации.
 */
-.form-field input:hover,
-.form-field select:hover,
-.form-field textarea:hover {
+.order-form__input:hover,
+.order-form__select:hover,
+.order-form__textarea:hover {
   border-color: var(--color-primary);
 }
 
-.form-field input:focus-visible,
-.form-field select:focus-visible,
-.form-field textarea:focus-visible,
-.form-actions button:focus-visible {
+.order-form__input:focus-visible,
+.order-form__select:focus-visible,
+.order-form__textarea:focus-visible,
+.order-form__actions .button:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 3px;
 }
@@ -339,7 +339,7 @@ width: min(100% - 32px, 560px);
 /*
   Кнопки формы.
 */
-.form-actions {
+.order-form__actions {
   display: flex;
   gap: 12px;
   margin-top: 20px;
@@ -351,11 +351,11 @@ width: min(100% - 32px, 560px);
   color: var(--color-muted);
 }
 
-.breadcrumbs a {
+.breadcrumbs__link {
   color: var(--color-primary);
 }
 
-.breadcrumbsspan::before {
+.breadcrumbs__current::before {
   content: " / ";
   color: var(--color-muted);
 }
@@ -372,28 +372,29 @@ outline-offset: 4px;
   grid-template-columns: repeat(3, 1fr);
 gap: var(--space-lg);
 }
-.filters-form {
+.catalog-filters__form {
   display: grid;
   gap: var(--space-md);
 }
 
-.filters-form fieldset {
+.catalog-filters__group {
   margin: 0;
   padding: var(--space-md);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
 }
 
-.filters-form legend {
+.catalog-filters__group legend {
   font-weight: 700;
 }
 
-.filters-form label {
+.catalog-filters__option,
+.catalog-filters__label {
   display: block;
   margin-bottom: var(--space-sm);
 }
 
-.filters-form input[type="number"] {
+.catalog-filters__input {
   width: 100%;
   padding: 8px 10px;
   border: 1px solid var(--color-border);
